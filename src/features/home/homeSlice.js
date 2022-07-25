@@ -14,6 +14,7 @@ const initialState = {
   },
   question: {},
   preview: {},
+  hasNotFound: false,
 };
 
 export const getAllUser = createAsyncThunk('home/getAllUser', async () => {
@@ -61,6 +62,9 @@ export const counterSlice = createSlice({
     setPreview: (state, { payload }) => {
       state.preview = { ...payload };
     },
+    setNotFound: (state, { payload }) => {
+      state.hasNotFound = payload;
+    },
   },
 
   extraReducers: (builder) => {
@@ -73,11 +77,12 @@ export const counterSlice = createSlice({
   },
 });
 
-export const { setLogin, setQuestion, setPreview, setQuestions } =
+export const { setLogin, setQuestion, setPreview, setQuestions, setNotFound } =
   counterSlice.actions;
 export const selectUsers = (state) => state.home.users;
 export const selectLogin = (state) => state.home.login;
 export const selectQuestions = (state) => state.home.questions;
 export const selectQuestion = (state) => state.home.question;
+export const selectNotFound = (state) => state.home.hasNotFound;
 
 export default counterSlice.reducer;

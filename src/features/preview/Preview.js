@@ -6,6 +6,8 @@ import {
   selectQuestion,
   selectQuestions,
   selectUsers,
+  setLogin,
+  setNotFound,
 } from '../home/homeSlice';
 
 const classNamesVoted =
@@ -28,7 +30,13 @@ export default function Preview() {
   useEffect(() => {
     let temp = questions.find((cquestion) => cquestion.id === id);
     if (!temp) {
-      navigate('/404');
+      dispatch(
+        setLogin({
+          isLoggedIn: false,
+        })
+      );
+      dispatch(setNotFound(true));
+      navigate('/');
       return;
     }
     setTempQuestion({

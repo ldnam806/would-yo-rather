@@ -8,6 +8,7 @@ import {
   selectQuestions,
   setLogin,
   submited,
+  setNotFound,
 } from '../features/home/homeSlice';
 
 export default function Question() {
@@ -23,7 +24,13 @@ export default function Question() {
   useEffect(() => {
     let temp = questions.find((cquestion) => cquestion.id === id);
     if (!temp) {
-      navigate('/404');
+      dispatch(
+        setLogin({
+          isLoggedIn: false,
+        })
+      );
+      dispatch(setNotFound(true));
+      navigate('/');
       return;
     }
     setTempQuestion({
@@ -79,28 +86,30 @@ export default function Question() {
         />
         <div className="flex flex-col flex-1">
           <span className="text-[22px] font-bold">Would You Rather ...</span>
-          <div onChange={(e) => setGender(e)} className="mb-4 mt-2">
+          <div className="mb-4 mt-2">
             <div className="flex items-center gap-[10px]">
               <input
+                onChange={(e) => setGender(e)}
                 type="radio"
                 value="optionOne"
                 name="option"
                 id="option1"
                 checked={option === 'optionOne' && true}
               />
-              <label for="option1" className="font-semibold">
+              <label htmlFor="option1" className="font-semibold">
                 {tempQuestion.optionOne?.text}
               </label>
             </div>
             <div className="flex items-center gap-[10px]">
               <input
+                onChange={(e) => setGender(e)}
                 id="option2"
                 type="radio"
                 value="optionTwo"
                 name="option"
                 checked={option === 'optionTwo' && true}
               />
-              <label for="option2" className="font-semibold">
+              <label htmlFor="option2" className="font-semibold">
                 {tempQuestion.optionTwo?.text}
               </label>
             </div>
