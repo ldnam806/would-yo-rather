@@ -1,12 +1,12 @@
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
+  selectLogin,
   selectQuestion,
   selectQuestions,
-  selectLogin,
   selectUsers,
-  getAllQuestion,
 } from '../home/homeSlice';
-import { useSelector, useDispatch } from 'react-redux';
-import { useState, useEffect } from 'react';
 
 const classNamesVoted =
   'flex flex-col gap-2 bg-blue-200 border-2 border-blue-300 p-4 text-blue-800 font-bold text-[16px] rounded-[4px] voted';
@@ -21,9 +21,16 @@ export default function Preview() {
   const question = useSelector(selectQuestion);
   const login = useSelector(selectLogin);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  let { id } = useParams();
 
   useEffect(() => {
-    let temp = questions.find((cquestion) => cquestion.id === question.id);
+    let temp = questions.find((cquestion) => cquestion.id === id);
+    if (!temp) {
+      navigate('/404');
+      return;
+    }
     setTempQuestion({
       name: question.name,
       optionOne: temp.optionOne,

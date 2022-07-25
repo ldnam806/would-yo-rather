@@ -1,15 +1,14 @@
-import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
-  selectQuestions,
   getAllQuestion,
-  selectQuestion,
-  submited,
   selectLogin,
+  selectQuestion,
+  selectQuestions,
   setLogin,
-  setQuestions,
+  submited,
 } from '../features/home/homeSlice';
-import { useNavigate } from 'react-router-dom';
 
 export default function Question() {
   const dispatch = useDispatch();
@@ -18,8 +17,15 @@ export default function Question() {
   const login = useSelector(selectLogin);
   const [tempQuestion, setTempQuestion] = useState({});
   const [option, setQuestion] = useState('');
+  const navigate = useNavigate();
+  let { id } = useParams();
+
   useEffect(() => {
-    let temp = questions.find((cquestion) => cquestion.id === question.id);
+    let temp = questions.find((cquestion) => cquestion.id === id);
+    if (!temp) {
+      navigate('/404');
+      return;
+    }
     setTempQuestion({
       name: question.name,
       optionOne: temp.optionOne,
@@ -27,7 +33,9 @@ export default function Question() {
       id: question.id,
       avatar: question.avatar,
     });
-  }, [questions]);
+    return () => {};
+  }, []);
+
   useEffect(() => {
     tempQuestion?.optionOne?.text === question.option.text
       ? setQuestion('optionOne')
@@ -37,7 +45,6 @@ export default function Question() {
   const setGender = (event) => {
     setQuestion(event.target.value);
   };
-  const navigate = useNavigate();
 
   const onSubmited = async () => {
     await dispatch(

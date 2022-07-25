@@ -54,7 +54,8 @@
     "@headlessui/react": "^1.6.5",
     "@heroicons/react": "^1.0.6",
     "react-router-dom": "^6.3.0",
-    "react-scripts": "^5.0.1"
+    "react-scripts": "^5.0.1",
+    "redux-persist": "^6.0.0"
   },
   "browserslist": {
     "production": [
