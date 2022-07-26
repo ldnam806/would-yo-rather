@@ -2,6 +2,8 @@ import {
   selectUsers,
   selectQuestions,
   getAllQuestion,
+  selectLogin,
+  getAllUser,
 } from '../../features/home/homeSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
@@ -11,22 +13,23 @@ export default function Leaderboard() {
   const users = useSelector(selectUsers);
   const questions = useSelector(selectQuestions);
   const dispatch = useDispatch();
+  const login = useSelector(selectLogin);
 
   useEffect(() => {
-    dispatch(getAllQuestion());
-  }, [users]);
+    dispatch(getAllUser()).then((res) => {
+      let temps = res.payload
+        .map((user) => {
+          return {
+            ...user,
+            scope: Object.keys(user.answers).length + user.questions.length,
+          };
+        })
+        .sort((a, b) => b.scope - a.scope);
+      setBoard(temps);
+    });
+  }, [login]);
 
-  useEffect(() => {
-    let temps = users
-      .map((user) => {
-        return {
-          ...user,
-          scope: Object.keys(user.answers).length + user.questions.length,
-        };
-      })
-      .sort((a, b) => b.scope - a.scope);
-    setBoard(temps);
-  }, [questions]);
+  useEffect(() => {}, []);
   return (
     <div className="leaderboard w-[600px] mx-auto">
       <div className="mt-6">

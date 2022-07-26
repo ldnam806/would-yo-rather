@@ -8,7 +8,6 @@ import { Navigate } from 'react-router-dom';
 export default function Home() {
   const login = useSelector(selectLogin);
   const hasNotFound = useSelector(selectNotFound);
-
   useEffect(() => {
     dispatch(getAllUser());
   }, []);

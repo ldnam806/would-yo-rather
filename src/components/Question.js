@@ -8,8 +8,8 @@ import {
   selectQuestions,
   setLogin,
   submited,
-  setNotFound,
 } from '../features/home/homeSlice';
+import { setNotFound } from '../app/commonSlice';
 
 export default function Question() {
   const dispatch = useDispatch();
@@ -24,13 +24,8 @@ export default function Question() {
   useEffect(() => {
     let temp = questions.find((cquestion) => cquestion.id === id);
     if (!temp) {
-      dispatch(
-        setLogin({
-          isLoggedIn: false,
-        })
-      );
       dispatch(setNotFound(true));
-      navigate('/');
+      navigate('/404');
       return;
     }
     setTempQuestion({

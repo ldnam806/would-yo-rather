@@ -5,9 +5,9 @@ import { store, persistor } from './app/store';
 import App from './App';
 import './index.css';
 import { PersistGate } from 'redux-persist/integration/react';
-
 const container = document.getElementById('root');
 const root = createRoot(container);
+import { setLogin } from './features/home/homeSlice';
 
 root.render(
   <React.StrictMode>

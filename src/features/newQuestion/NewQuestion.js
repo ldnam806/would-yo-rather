@@ -1,5 +1,10 @@
 import { useState } from 'react';
-import { createQuestion, selectLogin } from '../../features/home/homeSlice';
+import {
+  createQuestion,
+  selectLogin,
+  getAllQuestion,
+  setLogin,
+} from '../../features/home/homeSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,10 +12,12 @@ export default function NewQuestion() {
   const dispatch = useDispatch();
   const login = useSelector(selectLogin);
   const navigate = useNavigate();
+
   const [data, setData] = useState({
     optionOneText: '',
     optionTwoText: '',
   });
+
   const onChangeText = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
@@ -22,7 +29,14 @@ export default function NewQuestion() {
       ...data,
       author: login.id,
     };
-    await dispatch(createQuestion(dataSubmit));
+    let resCre = await dispatch(createQuestion(dataSubmit));
+    await dispatch(getAllQuestion());
+    dispatch(
+      setLogin({
+        ...login,
+        questions: [...login.questions, resCre?.payload?.id],
+      })
+    );
     navigate('/');
   };
 

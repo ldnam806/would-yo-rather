@@ -1,16 +1,24 @@
 import { useState, Fragment, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { selectUsers, setLogin } from '../features/home/homeSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  selectUsers,
+  setLogin,
+  getAllUser,
+  getAllQuestion,
+} from '../features/home/homeSlice';
+import { selectNotFound, selectCurrentPath } from '../app/commonSlice';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
-import { useDispatch } from 'react-redux';
-
+import { useNavigate } from 'react-router-dom';
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 export default function Login() {
-  const users = useSelector(selectUsers);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const users = useSelector(selectUsers);
+  const hasNotFound = useSelector(selectNotFound);
+  const currentPath = useSelector(selectCurrentPath);
   const [selected, setSelected] = useState(users[0]);
   const onLogin = () => {
     dispatch(
@@ -19,7 +27,12 @@ export default function Login() {
         ...selected,
       })
     );
+    navigate(currentPath);
   };
+
+  useEffect(() => {
+    dispatch(getAllUser());
+  }, []);
   return (
     <div className="w-full border rounded-[6px] mt-[20px]">
       <div className="bg-gray-300 flex flex-col items-center py-4">

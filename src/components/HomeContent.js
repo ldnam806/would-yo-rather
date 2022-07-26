@@ -16,40 +16,42 @@ export default function HomeContent() {
   const [all, setAll] = useState([]);
   const [activeTab, setActiveTab] = useState(1);
   const [currentAnswered, setCurrentAnswered] = useState([]);
-  useEffect(() => {
-    dispatch(getAllQuestion());
-  }, []);
-  useEffect(() => {
-    setCurrentAnswered(Object.keys(login.answers));
-  }, [login]);
 
+  // useEffect(() => {
+
+  // }, [login.answers]);
   useEffect(() => {
-    let clone = [];
-    const temp = questions
-      .map((item) => {
-        return {
-          id: item.id,
-          author: item.author,
-          options: [item.optionOne, item.optionTwo],
-          timestamp: item.timestamp,
-          name: users.find((user) => user.id === item.author).name || 'N/A',
-          avatar: users.find((user) => user.id === item.author).avatarURL,
-        };
-      })
-      .forEach((item) => {
-        item.options.forEach((option) => {
-          clone.push({
+    dispatch(getAllQuestion()).then((res) => {
+      let clone = [];
+      const temp = res.payload
+        ?.map((item) => {
+          return {
             id: item.id,
             author: item.author,
-            option,
+            options: [item.optionOne, item.optionTwo],
             timestamp: item.timestamp,
-            name: item.name,
-            avatar: item.avatar,
+            name: users.find((user) => user.id === item.author).name || 'N/A',
+            avatar: users.find((user) => user.id === item.author).avatarURL,
+          };
+        })
+        .forEach((item) => {
+          item.options.forEach((option) => {
+            clone.push({
+              id: item.id,
+              author: item.author,
+              option,
+              timestamp: item.timestamp,
+              name: item.name,
+              avatar: item.avatar,
+            });
           });
         });
-      });
-    setAll(clone);
-  }, [questions]);
+
+      let sortItems = clone.sort((a, b) => b.timestamp - a.timestamp);
+      setCurrentAnswered(Object.keys(login.answers));
+      setAll(sortItems);
+    });
+  }, []);
 
   return (
     <div className="max-w-[400px] mx-auto mt-[20px]  border rounded-[4px]">

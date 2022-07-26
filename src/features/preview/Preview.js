@@ -7,9 +7,8 @@ import {
   selectQuestions,
   selectUsers,
   setLogin,
-  setNotFound,
 } from '../home/homeSlice';
-
+import { setNotFound } from '../../app/commonSlice';
 const classNamesVoted =
   'flex flex-col gap-2 bg-blue-200 border-2 border-blue-300 p-4 text-blue-800 font-bold text-[16px] rounded-[4px] voted';
 
@@ -30,13 +29,13 @@ export default function Preview() {
   useEffect(() => {
     let temp = questions.find((cquestion) => cquestion.id === id);
     if (!temp) {
-      dispatch(
-        setLogin({
-          isLoggedIn: false,
-        })
-      );
+      // dispatch(
+      //   setLogin({
+      //     isLoggedIn: false,
+      //   })
+      // );
       dispatch(setNotFound(true));
-      navigate('/');
+      navigate('/404');
       return;
     }
     setTempQuestion({

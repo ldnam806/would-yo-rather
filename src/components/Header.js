@@ -38,15 +38,16 @@ export default function Header() {
               <Link to="/add">New Question</Link>
             </li>
           )}
-
-          <li
-            className={`text-[18px] font-semibold ${
-              pathname === '/leaderboard' &&
-              'bg-blue-300 text-white rounded-[4px] py-1 px-3'
-            }`}
-          >
-            <Link to="/leaderboard">Leaderboard</Link>
-          </li>
+          {login.isLoggedIn && (
+            <li
+              className={`text-[18px] font-semibold ${
+                pathname === '/leaderboard' &&
+                'bg-blue-300 text-white rounded-[4px] py-1 px-3'
+              }`}
+            >
+              <Link to="/leaderboard">Leaderboard</Link>
+            </li>
+          )}
         </ul>
       </div>
       {login.isLoggedIn && (
